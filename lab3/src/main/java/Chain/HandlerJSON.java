@@ -18,7 +18,11 @@ import java.util.logging.Logger;
  */
 public class HandlerJSON extends BaseHandler{
     private ReaderJSON reader;
-    private ArrayList<Reactor> list;
+    private ArrayList<Reactor> list = new ArrayList<>();
+
+    public HandlerJSON() {
+        this.reader = new ReaderJSON();
+    }
      @Override
     public ArrayList<Reactor> handle(File file) {
        if (file.getName().matches(".*\\.json")){
@@ -26,9 +30,10 @@ public class HandlerJSON extends BaseHandler{
               // reader.ReaderJSON();
                for (Reactor reactor: reader.ReaderJSON()){
                    reactor.setSource("JSON");
+                   System.out.println(reactor);
                    list.add(reactor);
                }
-               return list;
+               
            } catch (IOException ex) {
                Logger.getLogger(HandlerJSON.class.getName()).log(Level.SEVERE, null, ex);
            }

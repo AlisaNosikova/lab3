@@ -91,4 +91,7 @@ public class Reactor {
     public void setSource(String source){
         this.source = source;
     }
+    public String getSource(){
+        return source;
+    }
 }

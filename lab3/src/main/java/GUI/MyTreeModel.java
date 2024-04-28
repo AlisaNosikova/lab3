@@ -7,7 +7,9 @@ package GUI;
 import Readers.Reactor;
 import java.util.ArrayList;
 import java.util.HashSet;
+import javax.swing.ImageIcon;
 import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
@@ -18,17 +20,35 @@ import javax.swing.tree.TreePath;
 public class MyTreeModel implements TreeModel {
     private ArrayList<Reactor> reactorsList;
     private Node root;
+    private Node reactorsNode;
 
  public MyTreeModel() {
-    root = new Node("Корневая запись");
-        
-    Node studentsNode = new Node("Реакторы");
-
-    root.addChild(studentsNode);
+    root = new Node("Корневая запись");      
+    reactorsNode = new Node("Реакторы");
+    root.addChild(reactorsNode);
+    
+       
 }
     public void setReactorsList(ArrayList<Reactor> list){
         this.reactorsList = list;
+        addNode(list);
     }
+     public void addNode(ArrayList<Reactor> list){
+      for (Reactor reactor: list){
+        Node node1 = new Node(reactor.getClassName());
+        reactorsNode.addChild(node1);
+        node1.addChild(new Node(String.valueOf(reactor.getBurnup())));     
+        node1.addChild(new Node(String.valueOf(reactor.getKpd())));
+        node1.addChild(new Node(String.valueOf(reactor.getEnrichment())));
+        node1.addChild(new Node(String.valueOf(reactor.getTermal_capacity())));
+        node1.addChild(new Node(String.valueOf(reactor.getElectrical_capacity())));
+        node1.addChild(new Node(String.valueOf(reactor.getLife_time())));
+        node1.addChild(new Node(String.valueOf(reactor.getFirst_load())));
+        node1.addChild(new Node(reactor.getSource()));
+    }
+
+ }
+    
     @Override
     public Object getRoot() {
         return root;

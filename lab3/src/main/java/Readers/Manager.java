@@ -25,8 +25,8 @@ public class Manager {
         h1 = new HandlerJSON();
         h2 = new HandlerXML();
         h3= new HandlerYaml();
-        h2.setNext(h1);
-        h3.setNext(h3);
+        h1.setNext(h2);
+        h2.setNext(h3);
         storage.addReactor(h1.handle(file));
     }
     public ArrayList<Reactor> getInfo(){

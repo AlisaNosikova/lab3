@@ -23,14 +23,14 @@ public class ReaderXML {
         Reactor reactor = null;
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         try{
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream("ReactorType.xml"));
+            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream("src\\main\\resources\\ReactorType.xml"));
             while (reader.hasNext()) {
                   XMLEvent nextEvent = reader.nextEvent();
                  if (nextEvent.isStartElement()) {
                       StartElement startElement = nextEvent.asStartElement();
                       switch (startElement.getName().getLocalPart()) {
                        case "Reactor" -> reactor = new Reactor();
-                       case "name" -> {
+                       case "className" -> {
                 nextEvent = reader.nextEvent();
                 reactor.setClassName(nextEvent.asCharacters().getData());
              }
@@ -75,6 +75,7 @@ public class ReaderXML {
         } catch (XMLStreamException exc) {
             exc.printStackTrace();
         }
+        System.out.println(reactorsList);
         return reactorsList;
 }
 }

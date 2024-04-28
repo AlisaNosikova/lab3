@@ -17,7 +17,10 @@ import java.util.logging.Logger;
  */
 public class HandlerXML extends BaseHandler{
     private ReaderXML reader;
-    private ArrayList<Reactor> list;
+    private ArrayList<Reactor> list = new ArrayList<>();
+    public HandlerXML(){
+        this.reader = new ReaderXML();
+    }
     @Override
     public ArrayList<Reactor> handle(File file) {
        if (file.getName().matches(".*\\.xml")){

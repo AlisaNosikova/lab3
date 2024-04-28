@@ -17,7 +17,10 @@ import java.util.logging.Logger;
  */
 public class HandlerYaml extends BaseHandler {
     private ReaderYaml reader;
-    private ArrayList<Reactor> list;
+    private ArrayList<Reactor> list= new ArrayList<>();
+    public HandlerYaml(){
+        this.reader = new ReaderYaml();
+    }
     @Override
     public ArrayList<Reactor> handle(File file) {
        if (file.getName().matches(".*\\.yaml")){
