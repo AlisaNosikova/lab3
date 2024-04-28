@@ -4,7 +4,10 @@
 
 package com.mycompany.lab3;
 
-import Readers.ReaderXML;
+import GUI.Frame;
+import Readers.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  *
@@ -12,8 +15,10 @@ import Readers.ReaderXML;
  */
 public class Lab3 {
 
-    public static void main(String[] args) {
-        ReaderXML xml = new ReaderXML("C:\\Users\\User\\Downloads\\3 лаба\\ReactorType.xml");
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+       Frame frame = new Frame("Реакторы");
+       
         
+    
     }
 }

@@ -6,6 +6,7 @@ package Readers;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import javax.xml.stream.*;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.*;
@@ -16,72 +17,66 @@ import javax.xml.stream.events.*;
  * @author User
  */
 public class ReaderXML {
-    public ReaderXML(String fileName) {
-       
+    
+    public ArrayList<Reactor> ReaderXML() throws FileNotFoundException{
+        ArrayList<Reactor> reactorsList = new ArrayList<>();
+        Reactor reactor = null;
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        try  {
-             Reactors reactors = new Reactors();
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(fileName));
+        try{
+            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream("ReactorType.xml"));
             while (reader.hasNext()) {
-                XMLEvent xmlEvent = reader.nextEvent();
-                if (xmlEvent.isStartElement()) {
-                    StartElement startElement = xmlEvent.asStartElement();
-                    if (startElement.getName().getLocalPart().equals("ReactorType")) {
-                        Reactor reactor = new Reactor();
-                        xmlEvent = reader.nextEvent();
-                        while (reader.hasNext()) {
-                            if (xmlEvent.isStartElement()) {
-                                switch (xmlEvent.asStartElement().getName().getLocalPart()) {
-                                    case "class":
-                                     xmlEvent = reader.nextEvent();
-                                        reactor.setClassName(xmlEvent.asCharacters().getData());
-                                      break;
-                                    case "burnup":
-                                      xmlEvent = reader.nextEvent();
-                                       reactor.setBurnup(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                                        break;
-                                    case "kpd":
-                                       xmlEvent = reader.nextEvent();
-                                        reactor.setKpd(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                                        break;
-                                    case "enrichment":
-                                       xmlEvent = reader.nextEvent();
-                                        reactor.setEnrichment(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                                        break;
-                                    case "termal_capacity":
-                                        xmlEvent = reader.nextEvent();
-                                        reactor.setTermalCapacity(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                                        break;
-                                    case "electrical_capacity":
-                                        xmlEvent = reader.nextEvent();
-                                        reactor.setElectricalCapacity(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                                        break;
-                                    case "life_time":
-                                        xmlEvent = reader.nextEvent();
-                                        reactor.setLifeTime(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                                        break;
-                                    case "first_load":
-                                       xmlEvent = reader.nextEvent();
-                                        reactor.setFirstLoad(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                         reactors.addReactor(reactor);
-                          xmlEvent = reader.nextEvent();
-                          
-                        }
-                     
-                    }
-                }
-            }
-        } catch (FileNotFoundException | XMLStreamException exc) {
-            exc.printStackTrace(); // Обработка исключений для XML
+                  XMLEvent nextEvent = reader.nextEvent();
+                 if (nextEvent.isStartElement()) {
+                      StartElement startElement = nextEvent.asStartElement();
+                      switch (startElement.getName().getLocalPart()) {
+                       case "Reactor" -> reactor = new Reactor();
+                       case "name" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setClassName(nextEvent.asCharacters().getData());
+             }
+            case "burnup" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setBurnup(Double.parseDouble(nextEvent.asCharacters().getData()));
+                          }
+            case "kpd" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setKpd(Double.parseDouble(nextEvent.asCharacters().getData()));
+                          }
+            case "enrichment" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setEnrichment(Double.parseDouble(nextEvent.asCharacters().getData()));
+                          }
+            case "terma_capacity" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setTermal_capacity(Double.parseDouble(nextEvent.asCharacters().getData()));
+                          }
+             case "electrical_capacity" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setElectrical_capacity(Double.parseDouble(nextEvent.asCharacters().getData()));
+                          }
+             case "life_time" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setLife_time(Double.parseDouble(nextEvent.asCharacters().getData()));
+                          }
+              case "first_load" -> {
+                nextEvent = reader.nextEvent();
+                reactor.setFirst_load(Double.parseDouble(nextEvent.asCharacters().getData()));
+                          }   
+        }
+    }
+    if (nextEvent.isEndElement()) {
+        EndElement endElement = nextEvent.asEndElement();
+        if (endElement.getName().getLocalPart().equals("Reactor")) {
+            reactorsList.add(reactor);
         }
     }
 }
  
+        } catch (XMLStreamException exc) {
+            exc.printStackTrace();
+        }
+        return reactorsList;
+}
+}
 
-    
-
+ 
