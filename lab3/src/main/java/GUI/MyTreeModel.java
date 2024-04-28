@@ -22,11 +22,9 @@ public class MyTreeModel implements TreeModel {
  public MyTreeModel() {
     root = new Node("Корневая запись");
         
-    Node studentsNode = new Node("Студенты");
-    Node teachersNode = new Node("Преподаватели");
+    Node studentsNode = new Node("Реакторы");
 
     root.addChild(studentsNode);
-    root.addChild(teachersNode); // Добавляем узел "Преподаватели" к корневой записи
 }
     public void setReactorsList(ArrayList<Reactor> list){
         this.reactorsList = list;
