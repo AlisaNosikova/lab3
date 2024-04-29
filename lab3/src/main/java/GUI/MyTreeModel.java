@@ -37,14 +37,14 @@ public class MyTreeModel implements TreeModel {
       for (Reactor reactor: list){
         Node node1 = new Node(reactor.getClassName());
         reactorsNode.addChild(node1);
-        node1.addChild(new Node(String.valueOf(reactor.getBurnup())));     
-        node1.addChild(new Node(String.valueOf(reactor.getKpd())));
-        node1.addChild(new Node(String.valueOf(reactor.getEnrichment())));
-        node1.addChild(new Node(String.valueOf(reactor.getTermal_capacity())));
-        node1.addChild(new Node(String.valueOf(reactor.getElectrical_capacity())));
-        node1.addChild(new Node(String.valueOf(reactor.getLife_time())));
-        node1.addChild(new Node(String.valueOf(reactor.getFirst_load())));
-        node1.addChild(new Node(reactor.getSource()));
+        node1.addChild(new Node("Burnup: " + String.valueOf(reactor.getBurnup())));     
+        node1.addChild(new Node("Kpd: " + String.valueOf(reactor.getKpd())));
+        node1.addChild(new Node("Enrichment: " + String.valueOf(reactor.getEnrichment())));
+        node1.addChild(new Node("Termal Capacity: " + String.valueOf(reactor.getTermal_capacity())));
+        node1.addChild(new Node("Electrical Capacity: " + String.valueOf(reactor.getElectrical_capacity())));
+        node1.addChild(new Node("Life time: " + String.valueOf(reactor.getLife_time())));
+        node1.addChild(new Node("First load: " + String.valueOf(reactor.getFirst_load())));
+        node1.addChild(new Node("Источник: " + reactor.getSource()));
     }
 
  }

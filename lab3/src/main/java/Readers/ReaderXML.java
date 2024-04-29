@@ -4,6 +4,7 @@
  */
 package Readers;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -18,12 +19,12 @@ import javax.xml.stream.events.*;
  */
 public class ReaderXML {
     
-    public ArrayList<Reactor> ReaderXML() throws FileNotFoundException{
+    public ArrayList<Reactor> ReaderXML(File file) throws FileNotFoundException{
         ArrayList<Reactor> reactorsList = new ArrayList<>();
         Reactor reactor = null;
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         try{
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream("src\\main\\resources\\ReactorType.xml"));
+            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(file));
             while (reader.hasNext()) {
                   XMLEvent nextEvent = reader.nextEvent();
                  if (nextEvent.isStartElement()) {

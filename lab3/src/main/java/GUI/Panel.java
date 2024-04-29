@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -62,44 +63,43 @@ public class Panel extends JPanel{
     File selectedFile = fileChooser.getSelectedFile();
 
     if (selectedFile != null && selectedFile.exists()) {
+        try{
         if (result == JFileChooser.APPROVE_OPTION) {
             manager.startChain(selectedFile);
-            JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile());
+            JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
         }
-    } else {
+     else {
         if (selectedFile != null && !selectedFile.exists()) {
             JOptionPane.showMessageDialog(null, "Файл не существует", "Предупреждение", JOptionPane.ERROR_MESSAGE);
         }
+      
     }
-
+    }catch (NullPointerException en){
+              JOptionPane.showMessageDialog(null, "Для этого файла нет обработчика", "Предупреждение", JOptionPane.ERROR_MESSAGE);
+            }
+    }
     }
     }
     public class ShowActionListener implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-              MyTreeModel model = new MyTreeModel();
-              model.setReactorsList(manager.getInfo());
-              JTree tree = new JTree(model);
+            try{
+            MyTreeModel model = new MyTreeModel();
             
-               DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-               ImageIcon icon1 = new ImageIcon("C:\\Users\\User\\Downloads\\images\\reactor.png");
-              ImageIcon resizedIcon1 = new ImageIcon(icon1.getImage().getScaledInstance(18, 18, java.awt.Image.SCALE_SMOOTH));
-              renderer.setOpenIcon(resizedIcon1);
-               ImageIcon icon2 = new ImageIcon("C:\\Users\\User\\Downloads\\images\\light.png");
-              ImageIcon resizedIcon2 = new ImageIcon(icon2.getImage().getScaledInstance(21, 21, java.awt.Image.SCALE_SMOOTH));
-              renderer.setLeafIcon(resizedIcon2);
-      //  renderer.setOpenIcon  (new ImageIcon("images/woman.png"));
-       // renderer.setClosedIcon(new ImageIcon("images/star.png"));
-        // Определение в дереве отображающего объекта
-        tree.setCellRenderer(renderer);
-                  JScrollPane scrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-              panel.removeAll(); // Удалить все существующие компоненты
-              panel.setLayout(new BorderLayout());
-              panel.add(scrollPane, BorderLayout.CENTER);
-              revalidate();
-        }
-        
+            model.setReactorsList(manager.getInfo());
+            
+            JTree tree = new JTree(model);
+            JScrollPane scrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+            panel.removeAll(); // Удалить все существующие компоненты
+            panel.setLayout(new BorderLayout());
+            panel.add(scrollPane, BorderLayout.CENTER);
+            revalidate();
+            
+    }catch (NullPointerException en){
+        JOptionPane.showMessageDialog(null, "Нет данных для построение дерева", "Предупреждение", JOptionPane.ERROR_MESSAGE);
+    }
+    }
     }
       public void addButtons(){
         GridBagConstraints gbc = new GridBagConstraints();

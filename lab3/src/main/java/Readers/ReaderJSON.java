@@ -20,8 +20,8 @@ import java.util.List;
 public class ReaderJSON {
     ObjectMapper mapper = new ObjectMapper();
     ArrayList<Reactor> reactorsJSON = new ArrayList<>();
-    public ArrayList<Reactor> ReaderJSON() throws JsonProcessingException, IOException {
-       File file = new File("src\\main\\resources\\попыткиСделать.json");  
+    public ArrayList<Reactor> ReaderJSON(File file) throws JsonProcessingException, IOException {
+     //  File file = new File("src\\main\\resources\\попыткиСделать.json");  
        List<Reactor> listReactors = mapper.readValue(file, new TypeReference<List<Reactor>>(){});
        for (Reactor reactor: listReactors){
            reactorsJSON.add(reactor);

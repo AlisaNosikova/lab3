@@ -25,7 +25,7 @@ public class HandlerYaml extends BaseHandler {
     public ArrayList<Reactor> handle(File file) {
        if (file.getName().matches(".*\\.yaml")){
            try {
-                for (Reactor reactor: reader.ReaderYaml()){
+                for (Reactor reactor: reader.ReaderYaml(file)){
                    reactor.setSource("YAML");
                    list.add(reactor);
                }

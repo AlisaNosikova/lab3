@@ -28,11 +28,10 @@ import org.yaml.snakeyaml.inspector.TagInspector;
  * @author User
  */
 public class ReaderYaml {
-    public   ArrayList<Reactor> ReaderYaml() throws FileNotFoundException, IOException{
+    public   ArrayList<Reactor> ReaderYaml(File file) throws FileNotFoundException, IOException{
         ArrayList<Reactor> reactorsYaml = new ArrayList<Reactor>();
         Yaml yaml = new Yaml();
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("попыткисделатьyaml.yaml");
-
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(file.getName());
         Iterable<Object> documents = yaml.loadAll(inputStream);
         for (Object document : documents) {
             Map<String, Object> obj = (Map<String, Object>) document;
