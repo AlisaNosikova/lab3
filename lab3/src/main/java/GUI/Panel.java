@@ -5,6 +5,7 @@
 package GUI;
 
 import Readers.Manager;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -35,7 +36,6 @@ public class Panel extends JPanel{
     private JButton importButton;
     private JButton exitButton;
     private JFrame frame;
-    private ButtonGroup buttonGroup;
     private Panel panel;
   
     public Panel(JFrame frame){
@@ -45,7 +45,6 @@ public class Panel extends JPanel{
        this.showButton = new JButton("ShowTree");
        this.importButton = new JButton("Import");
        this.exitButton = new JButton("Exit");
-       this.buttonGroup = new ButtonGroup();
        setLayout(new GridBagLayout());
        addButtons();
        importButton.addActionListener(new ImportActionListener());
@@ -55,7 +54,7 @@ public class Panel extends JPanel{
     public class ImportActionListener implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
-    boolean choiceIsMade = false;
+    
     JFileChooser fileChooser = new JFileChooser("src\\main\\resources");
     fileChooser.setDialogTitle("Выбор директории");
     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -65,7 +64,9 @@ public class Panel extends JPanel{
     if (selectedFile != null && selectedFile.exists()) {
         try{
         if (result == JFileChooser.APPROVE_OPTION) {
+           
             manager.startChain(selectedFile);
+            
             JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
         }
      else {
@@ -77,6 +78,7 @@ public class Panel extends JPanel{
     }catch (NullPointerException en){
               JOptionPane.showMessageDialog(null, "Для этого файла нет обработчика", "Предупреждение", JOptionPane.ERROR_MESSAGE);
             }
+   
     }
     }
     }
@@ -87,7 +89,7 @@ public class Panel extends JPanel{
             try{
             MyTreeModel model = new MyTreeModel();
             
-            model.setReactorsList(manager.getInfo());
+            model.addReactorsList(manager.getInfo());
             
             JTree tree = new JTree(model);
             JScrollPane scrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);

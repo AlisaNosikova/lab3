@@ -22,6 +22,6 @@ public abstract class BaseHandler implements Handler{
     }
 
     @Override
-    public abstract ArrayList<Reactor> handle(File file);
+   public abstract ArrayList<Reactor> handle(File file);
 
 }

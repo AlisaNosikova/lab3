@@ -22,9 +22,6 @@ public class Reactor {
     private double first_load;
     private String source;
   
-    public Reactor() {
-    }
-  
     public String getClassName() {
         return className;
     }

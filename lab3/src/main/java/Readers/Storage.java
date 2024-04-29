@@ -11,11 +11,11 @@ import java.util.ArrayList;
  * @author User
  */
 public class Storage {
-    ArrayList<Reactor> currentList;
+    private ArrayList<Reactor> currentList;
     public Storage(){
         
     }
-    public void addReactor(ArrayList<Reactor> reactors){
+    public void addReactors(ArrayList<Reactor> reactors){
         currentList = reactors;
     }
     public ArrayList<Reactor> getList(){

@@ -6,10 +6,7 @@ package GUI;
 
 import Readers.Reactor;
 import java.util.ArrayList;
-import java.util.HashSet;
-import javax.swing.ImageIcon;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
@@ -18,7 +15,6 @@ import javax.swing.tree.TreePath;
  * @author User
  */
 public class MyTreeModel implements TreeModel {
-    private ArrayList<Reactor> reactorsList;
     private Node root;
     private Node reactorsNode;
 
@@ -29,8 +25,7 @@ public class MyTreeModel implements TreeModel {
     
        
 }
-    public void setReactorsList(ArrayList<Reactor> list){
-        this.reactorsList = list;
+    public void addReactorsList(ArrayList<Reactor> list){
         addNode(list);
     }
      public void addNode(ArrayList<Reactor> list){

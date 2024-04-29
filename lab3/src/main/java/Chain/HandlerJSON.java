@@ -27,10 +27,9 @@ public class HandlerJSON extends BaseHandler{
     public ArrayList<Reactor> handle(File file) {
        if (file.getName().matches(".*\\.json")){
            try {
-              // reader.ReaderJSON();
-               for (Reactor reactor: reader.ReaderJSON(file)){
+           
+               for (Reactor reactor: reader.ReadJSON(file)){
                    reactor.setSource("JSON");
-                   System.out.println(reactor);
                    list.add(reactor);
                }
                

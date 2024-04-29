@@ -17,8 +17,6 @@ public class Lab3 {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
      Frame frame = new Frame("Реакторы");
-     //  ReaderXML reader = new ReaderXML();
-      // reader.ReaderXML();
     
     }
 }

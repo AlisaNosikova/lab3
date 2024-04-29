@@ -25,12 +25,12 @@ public class HandlerXML extends BaseHandler{
     public ArrayList<Reactor> handle(File file) {
        if (file.getName().matches(".*\\.xml")){
            try {
-                for (Reactor reactor: reader.ReaderXML(file)){
+                for (Reactor reactor: reader.ReadXML(file)){
                    reactor.setSource("XML");
                    list.add(reactor);
                }
            } catch (IOException ex) {
-               
+               Logger.getLogger(HandlerJSON.class.getName()).log(Level.SEVERE, null, ex);
            }
        }
        else{

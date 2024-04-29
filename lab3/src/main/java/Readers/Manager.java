@@ -17,17 +17,21 @@ import java.util.ArrayList;
  * @author User
  */
 public class Manager {
-   BaseHandler h1;
-   BaseHandler h2;
-   BaseHandler h3;
-   Storage storage = new Storage();
+   private BaseHandler h1;
+   private BaseHandler h2;
+   private BaseHandler h3;
+   private Storage storage;
+
+    public Manager() {
+        this.storage = new Storage();
+    }
     public void startChain(File file){
         h1 = new HandlerJSON();
         h2 = new HandlerXML();
         h3= new HandlerYaml();
         h1.setNext(h2);
         h2.setNext(h3);
-        storage.addReactor(h1.handle(file));
+        storage.addReactors(h1.handle(file));
     }
     public ArrayList<Reactor> getInfo(){
         return storage.getList();
