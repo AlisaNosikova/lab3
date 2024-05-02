@@ -14,27 +14,20 @@ import java.util.ArrayList;
  * @author User
  */
 public class Manager {
-   private BaseHandler h1;
-   private BaseHandler h2;
-   private BaseHandler h3;
-   private ReaderJSON rJSON;
-   private ReaderXML rXML;
-   private ReaderYaml rYaml;
    private Storage storage;
+   private BaseHandler startHandler;
 
     public Manager() {
         this.storage = new Storage();
+        BaseHandler handlerJSON = new BaseHandler(new ReaderJSON());
+        BaseHandler handlerXML = new BaseHandler(new ReaderXML());
+        BaseHandler handlerYaml= new BaseHandler( new ReaderYaml());
+        startHandler = handlerJSON;
+        handlerJSON.setNext(handlerXML);
+        handlerXML.setNext(handlerYaml);
     }
-    public void startChain(File file){
-        rJSON = new ReaderJSON();
-        rXML = new ReaderXML();
-        rYaml = new ReaderYaml();
-        h1 = new BaseHandler(rJSON);
-        h2 = new BaseHandler(rXML);
-        h3= new BaseHandler(rYaml);
-        h1.setNext(h2);
-        h2.setNext(h3);
-        storage.addReactors(h1.handle(file));
+    public void useChain(File file){
+        storage.addReactors( startHandler.handle(file));
     }
     public ArrayList<Reactor> getInfo(){
         return storage.getList();

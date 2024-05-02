@@ -65,7 +65,7 @@ public class Panel extends JPanel{
         try{
         if (result == JFileChooser.APPROVE_OPTION) {
             try{
-            manager.startChain(selectedFile);
+            manager.useChain(selectedFile);
              //JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
             }  catch (NullPointerException ex) {
                     JOptionPane.showMessageDialog(null, "Для этого файла нет обработчика", "Предупреждение", JOptionPane.ERROR_MESSAGE);
