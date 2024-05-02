@@ -60,14 +60,17 @@ public class Panel extends JPanel{
     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     int result = fileChooser.showOpenDialog(Panel.this);
     File selectedFile = fileChooser.getSelectedFile();
-
+    JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
     if (selectedFile != null && selectedFile.exists()) {
         try{
         if (result == JFileChooser.APPROVE_OPTION) {
-           
+            try{
             manager.startChain(selectedFile);
-            
-            JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
+             //JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
+            }  catch (NullPointerException ex) {
+                    JOptionPane.showMessageDialog(null, "Для этого файла нет обработчика", "Предупреждение", JOptionPane.ERROR_MESSAGE);
+                }
+           
         }
      else {
         if (selectedFile != null && !selectedFile.exists()) {
@@ -88,16 +91,18 @@ public class Panel extends JPanel{
         public void actionPerformed(ActionEvent e) {
             try{
             MyTreeModel model = new MyTreeModel();
-            
-            model.addReactorsList(manager.getInfo());
-            
+            if (manager.getInfo().isEmpty()){
+              JOptionPane.showMessageDialog(null, "Нет данных для построение дерева", "Предупреждение", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+              model.addReactorsList(manager.getInfo());
             JTree tree = new JTree(model);
             JScrollPane scrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
             panel.removeAll(); // Удалить все существующие компоненты
             panel.setLayout(new BorderLayout());
             panel.add(scrollPane, BorderLayout.CENTER);
             revalidate();
-            
+            }
     }catch (NullPointerException en){
         JOptionPane.showMessageDialog(null, "Нет данных для построение дерева", "Предупреждение", JOptionPane.ERROR_MESSAGE);
     }

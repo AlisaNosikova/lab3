@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.xml.stream.*;
 import javax.xml.stream.events.StartElement;
@@ -18,9 +20,10 @@ import javax.xml.stream.events.*;
  *
  * @author User
  */
-public class ReaderXML {
+public class ReaderXML implements Reader {
       ArrayList<Reactor> reactorsList;
-    public ArrayList<Reactor> ReadXML(File file) throws FileNotFoundException{
+      @Override
+    public ArrayList<Reactor> Read(File file){
         reactorsList = new ArrayList<>();
         Reactor reactor = null;
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
@@ -76,10 +79,18 @@ public class ReaderXML {
  
         } catch (XMLStreamException exc) {
                 JOptionPane.showMessageDialog(null, "Файл невозможно прочитать", "Предупреждение", JOptionPane.ERROR_MESSAGE);
-        }
+        } catch (FileNotFoundException ex) {
+              Logger.getLogger(ReaderXML.class.getName()).log(Level.SEVERE, null, ex);
+          }
         
         return reactorsList;
 }
+      @Override
+     public String getFileType(){
+        
+        return "xml";
+        
+    }
 }
 
  

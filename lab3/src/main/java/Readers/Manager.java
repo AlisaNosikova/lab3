@@ -6,9 +6,6 @@ package Readers;
 
 import Chain.BaseHandler;
 import Chain.Handler;
-import Chain.HandlerJSON;
-import Chain.HandlerXML;
-import Chain.HandlerYaml;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -20,15 +17,21 @@ public class Manager {
    private BaseHandler h1;
    private BaseHandler h2;
    private BaseHandler h3;
+   private ReaderJSON rJSON;
+   private ReaderXML rXML;
+   private ReaderYaml rYaml;
    private Storage storage;
 
     public Manager() {
         this.storage = new Storage();
     }
     public void startChain(File file){
-        h1 = new HandlerJSON();
-        h2 = new HandlerXML();
-        h3= new HandlerYaml();
+        rJSON = new ReaderJSON();
+        rXML = new ReaderXML();
+        rYaml = new ReaderYaml();
+        h1 = new BaseHandler(rJSON);
+        h2 = new BaseHandler(rXML);
+        h3= new BaseHandler(rYaml);
         h1.setNext(h2);
         h2.setNext(h3);
         storage.addReactors(h1.handle(file));

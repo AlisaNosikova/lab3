@@ -5,7 +5,6 @@
 package com.mycompany.lab3;
 
 import GUI.Frame;
-import Readers.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
