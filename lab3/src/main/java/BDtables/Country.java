@@ -4,6 +4,8 @@
  */
 package BDtables;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author User
@@ -12,6 +14,7 @@ public class Country {
     private int id_country;
     private String country_name;
     private int id_region;
+    private ArrayList<ReactorDB> reactorsByCountry;
     
 public void setIDCountry(int id){
     this.id_country = id;
@@ -30,5 +33,11 @@ public void setIDRegion(int id){
 }
 public int getIDRegion(){
     return id_region;
+}
+public void setReactorsByCountry(ArrayList<ReactorDB> list){
+    this.reactorsByCountry = list;
+}
+public ArrayList<ReactorDB> getReactorsByCountry(){
+    return reactorsByCountry;
 }
 }
