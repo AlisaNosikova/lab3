@@ -5,6 +5,7 @@
 package BDtables;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,6 +25,7 @@ public class ReactorDB {
     private int ID_country;
     private double burnup;
     private int first_load;
+    private ArrayList<KIUM> kiumsByReactor;
 
 public int getID(){
         return ID_reactor;
@@ -102,6 +104,12 @@ public int getFirst_load(){
 }
 public void setFirst_load(int first_load){
     this.first_load = first_load;
+}
+public void setKiumsByReactor(ArrayList<KIUM> kiums){
+    this.kiumsByReactor = kiums;
+}
+public ArrayList<KIUM> getKiumsByReactor(){
+    return kiumsByReactor;
 }
 }
    

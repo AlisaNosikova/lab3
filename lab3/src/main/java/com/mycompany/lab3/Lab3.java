@@ -42,7 +42,7 @@ public class Lab3 {
  //   excelReader.readExcel(connection, "countries");
     SQLReader sqlReader = new SQLReader(connection);
     sqlReader.SQLRegionsReader();
- 
+    
 //createTables(connection);
  //insertTables(connection, "regions");
  //insertTables(connection, "countries");

@@ -47,19 +47,17 @@ public ArrayList<Country> SQLCountryReader(int id_region) throws SQLException{
             country.setIDCountry(resultSet.getInt("id_country"));
             country.setCountryName(resultSet.getString("country_name"));
             countries.add(country);
-            country.setReactorsByCountry(SQLReactorsReader(country.getIDCountry()));
-    }
-        return countries;
-    
+            country.setReactorsByCountry(SQLReactorsReader(country));
+    } 
+     return countries;
 }
- public ArrayList<ReactorDB> SQLReactorsReader(int id_country) throws SQLException{
+ public ArrayList<ReactorDB> SQLReactorsReader(Country country) throws SQLException{
         String queryNested = "SELECT id_reactor,reactor_name, reactor_type, model, status, thermal_capacity,first_grid_connection,date_shutdown, id_country FROM reactors c WHERE id_country = ?";
         PreparedStatement statementNested = con.prepareStatement(queryNested);
-        statementNested.setInt(1, id_country);  
+        statementNested.setInt(1, country.getIDCountry());  
         ResultSet resultSetNested = statementNested.executeQuery();
-        HashMap<Integer, HashMap<Integer, Double>> reactorData = new HashMap<>();
+        HashMap<Integer, ArrayList<ReactorDB>> reactorsData = new HashMap<Integer, ArrayList<ReactorDB>>();
         ArrayList<ReactorDB> reactors = new ArrayList<ReactorDB>();
-        ArrayList<KIUM> KIUMSbyReactor = new ArrayList<KIUM>();
         while(resultSetNested.next()){
             ReactorDB reactor = new ReactorDB();
             reactor.setID(resultSetNested.getInt("id_reactor"));
@@ -75,14 +73,9 @@ public ArrayList<Country> SQLCountryReader(int id_region) throws SQLException{
                 reactor.setDate_shutdown(null);
             }
             reactor.setID_country(resultSetNested.getInt("id_country"));
-         //   reactor.setName_owner(resultSetNested.getString("name_owner"));
-           // reactor.setName_operator(resultSetNested.getString("name_operator"));
-           
+            reactor.setKiumsByReactor(getKiums(reactor));
             reactors.add(reactor);
-           // HashMap<Integer, Double> kiumData = getKiums(reactor_ID);
-           // reactorData.put(reactor_ID, kiumData);   
     }
-       
       return reactors;  
     }
 public ArrayList<KIUM> getKiums(ReactorDB reactor) throws SQLException{
@@ -93,26 +86,23 @@ public ArrayList<KIUM> getKiums(ReactorDB reactor) throws SQLException{
     Integer year = 0;
     Integer year_down = 0;
     Integer year_start = 0;
-    ArrayList<KIUM> kiumsByReactor = new ArrayList<>();
+    HashMap<Integer,Double> kiumsByReactor = new HashMap<Integer, Double>();
     if (reactor.getDate_shutdown()!=null){
     year_down = reactor.getDate_shutdown().getYear();
     }
     year_start = reactor.getFirst_grid_connection().getYear();
     while(resultSet.next()){
-        KIUM kium = new KIUM();
-        kium.setKium(resultSet.getDouble("kium_value")); 
-        kium.setYear(resultSet.getInt("year"));
-        kiumsByReactor.add(kium);
+        kiumsByReactor.put(resultSet.getInt("year"),resultSet.getDouble("kium_value"));
     }
        
   return completeYears(kiumsByReactor, year_down, year_start);
        
 }
-public ArrayList<KIUM> completeYears(ArrayList<KIUM> kiums, int year_down, int yearStart){
-    for (KIUM kium: kiums){
+public ArrayList<KIUM> completeYears(HashMap<Integer,Double> map, int year_down, int yearStart){
+    ArrayList<KIUM> completeKiums = new ArrayList<KIUM>();
         for (int year = 2014; year <= 2024; year++) {
-            if (kium.getYear()!=year) {
-                KIUM newKium = new KIUM();
+            KIUM newKium = new KIUM();
+            if (!map.containsKey(year)) {    
                 if ((year< yearStart || year>= year_down) && year_down!=0){
                     newKium.setYear(year);
                     newKium.setKium(0.0);
@@ -121,11 +111,26 @@ public ArrayList<KIUM> completeYears(ArrayList<KIUM> kiums, int year_down, int y
                     newKium.setYear(year);
                     newKium.setKium(0.85);
                 }
-                kiums.add(newKium);
+                
             }
+            else{
+                newKium.setYear(year);
+                newKium.setKium(map.get(year));
+               
+            }
+            completeKiums.add(newKium);
+        }
+      return completeKiums;
+    }
+
+public void matchReactorsType(ReactorDB reactor){
+   String reactor_type = reactor.getType();
+    switch(reactor_type){
+      
+            
+            
         }
     }
-      return kiums;
-    }
 }
+
 
