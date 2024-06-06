@@ -23,7 +23,7 @@ public class SQLReader {
     public SQLReader(Connection con){
     this.con = con;
 }
-public void SQLRegionsReader() throws SQLException{
+public ArrayList<Region> SQLRegionsReader() throws SQLException{
     String queryNested = "SELECT id_region, region_name FROM regions reg";
     PreparedStatement statementNested = con.prepareStatement(queryNested);
     ResultSet resultSetNested = statementNested.executeQuery();
@@ -35,6 +35,7 @@ public void SQLRegionsReader() throws SQLException{
             region.setCountriesByRegion(SQLCountryReader(resultSetNested.getInt("id_region")));
             regions.add(region);
     }
+     return regions;
 }
 public ArrayList<Country> SQLCountryReader(int id_region) throws SQLException{
        String query = "SELECT id_country, country_name FROM countries WHERE id_region = ?";
@@ -74,6 +75,7 @@ public ArrayList<Country> SQLCountryReader(int id_region) throws SQLException{
             }
             reactor.setID_country(resultSetNested.getInt("id_country"));
             reactor.setKiumsByReactor(getKiums(reactor));
+            matchReactorsType(reactor);
             reactors.add(reactor);
     }
       return reactors;  
@@ -122,15 +124,19 @@ public ArrayList<KIUM> completeYears(HashMap<Integer,Double> map, int year_down,
         }
       return completeKiums;
     }
-
 public void matchReactorsType(ReactorDB reactor){
    String reactor_type = reactor.getType();
     switch(reactor_type){
-      
-            
-            
+        case "LWGR": reactor.setType("RBMK");
+        case "GCR": reactor.setType("MAGNOX");
+        case "FBR": reactor.setType("BN");    
         }
     }
+
+public void addAtributes(ReactorDB reactor){
+    
+}
+
 }
 
 
