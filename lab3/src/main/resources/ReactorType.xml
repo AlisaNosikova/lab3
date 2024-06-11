@@ -140,14 +140,4 @@
       <life_time>36.0</life_time>
       <first_load>0.007</first_load>
   </Reactor>
-  <Reactor>
-      <className>PWR</className>
-      <burnup>40.0</burnup>
-      <kpd>0.33</kpd>
-      <enrichment>0.044</enrichment>
-      <termal_capacity>3200.0</termal_capacity>
-      <electrical_capacity>1056.0</electrical_capacity>
-      <life_time>60.0</life_time>
-      <first_load>79.84</first_load>
-  </Reactor>
 </ReactorType>

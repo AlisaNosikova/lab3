@@ -6,6 +6,7 @@ package com.mycompany.lab3;
 
 import BDtables.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -15,6 +16,9 @@ public class StorageDB {
     private ArrayList<Region> regionList;
     private ArrayList<Country> countryList;
     private ArrayList<ReactorDB> reactorList;
+    private ArrayList<Company> companyList;
+    private HashMap<Integer, HashMap<Integer,Double>> consumpByReactors;
+    private HashMap<String, HashMap<Integer,Double>> consumpByCountries;
     public StorageDB(){
         
     }
@@ -24,7 +28,7 @@ public class StorageDB {
     public void addCountries(ArrayList<Country> countries){
         countryList = countries;
     }
-    public ArrayList<Region> getList(){
+    public ArrayList<Region> getRegionList(){
         return regionList;
     }
     public ArrayList<Country> getCountryList(){
@@ -36,5 +40,22 @@ public class StorageDB {
     public ArrayList<ReactorDB> getReactorList(){
        return reactorList;
     }
-    
+    public void addCompanies(ArrayList<Company> companies){
+        companyList = companies;
+    }
+    public ArrayList<Company> getCompanyList(){
+       return companyList;
+    }
+      public void addConsumpReactor(HashMap<Integer, HashMap<Integer,Double>> list){
+          consumpByReactors = list;
+    }
+      public HashMap<Integer, HashMap<Integer,Double>> getConsumpReactor(){
+          return consumpByReactors;
+      }
+        public void addConsumpCountry(HashMap<String, HashMap<Integer,Double>> list){
+          consumpByCountries = list;
+    }
+      public HashMap<String, HashMap<Integer,Double>> getConsumpCountry(){
+          return consumpByCountries;
+      }
 }

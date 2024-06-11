@@ -4,6 +4,9 @@
  */
 package BDtables;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  *
  * @author User
@@ -11,6 +14,7 @@ package BDtables;
 public class Company {
     private int id_company;
     private String company_name;
+    private  HashMap<String, ArrayList<ReactorDB>> reactorsList;
     
 public void setIDCompany(int id){
     this.id_company = id;
@@ -23,5 +27,11 @@ public void setCompanyName(String name){
 }
 public String getCompanyName(){
     return company_name;
+}
+public void setReactorsByCompany(HashMap<String, ArrayList<ReactorDB>> reactors){
+    this.reactorsList = reactors;
+}
+public  HashMap<String, ArrayList<ReactorDB>> getReactorsByCompany(){
+    return reactorsList;
 }
 }

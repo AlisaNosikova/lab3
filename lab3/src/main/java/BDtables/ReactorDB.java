@@ -24,8 +24,10 @@ public class ReactorDB {
     private String name_operator;
     private int ID_country;
     private double burnup;
-    private int first_load;
+    private double first_load;
     private ArrayList<KIUM> kiumsByReactor;
+    private int ID_owner;
+    private int ID_operator;
 
 public int getID(){
         return ID_reactor;
@@ -99,10 +101,10 @@ public double getBurnup(){
 public void setBurnup(double burnup){
     this.burnup = burnup;
 }
-public int getFirst_load(){
+public double getFirst_load(){
     return first_load;
 }
-public void setFirst_load(int first_load){
+public void setFirst_load(double first_load){
     this.first_load = first_load;
 }
 public void setKiumsByReactor(ArrayList<KIUM> kiums){
@@ -110,6 +112,40 @@ public void setKiumsByReactor(ArrayList<KIUM> kiums){
 }
 public ArrayList<KIUM> getKiumsByReactor(){
     return kiumsByReactor;
+}
+public void setID_Owner(int ID_owner){
+    this.ID_owner = ID_owner;
+}
+public int getID_Owner(){
+    return ID_owner;
+}
+public void setID_Operator(int ID_operator){
+    this.ID_operator = ID_operator;
+}
+public int getID_Operator(){
+    return ID_operator;
+}
+public String reactorString() {
+    StringBuilder details = new StringBuilder();
+    details.append("Reactor ID: ").append(ID_reactor).append("\n");
+    details.append("Reactor Name: ").append(reactor_name).append("\n");
+    details.append("Reactor Type: ").append(reactor_type).append("\n");
+    details.append("Model: ").append(model).append("\n");
+    details.append("Status: ").append(status).append("\n");
+    details.append("Thermal Capacity: ").append(termal_capacity).append("\n");
+    details.append("First Grid Connection: ").append(first_grid_connection).append("\n");
+    details.append("Date Shutdown: ").append(date_shutdown).append("\n");
+    details.append("Owner: ").append(name_owner).append("\n");
+    details.append("Operator: ").append(name_operator).append("\n");
+    details.append("Country ID: ").append(ID_country).append("\n");
+    details.append("Burnup: ").append(burnup).append("\n");
+    details.append("First Load: ").append(first_load).append("\n");
+    // Добавить KIUMs
+    details.append("KIUMs by Reactor:\n");
+    for (KIUM kium : kiumsByReactor) {
+        details.append(kium.toString()).append("\n");
+    }
+    return details.toString();
 }
 }
    

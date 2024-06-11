@@ -5,7 +5,6 @@
 package GUI;
 
 import Readers.Manager;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,9 +12,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -23,8 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
  *
@@ -66,10 +63,17 @@ public class Panel extends JPanel{
         if (result == JFileChooser.APPROVE_OPTION) {
             try{
             manager.useChain(selectedFile);
-             //JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
-            }  catch (NullPointerException ex) {
+            manager.createDB();
+            manager.loadInfo();
+           
+            manager.calculate("operator");
+           
+             JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
+           }  catch (NullPointerException ex) {
                     JOptionPane.showMessageDialog(null, "Для этого файла нет обработчика", "Предупреждение", JOptionPane.ERROR_MESSAGE);
-                }
+                } catch (SQLException ex) {
+                Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+            }
            
         }
      else {
@@ -78,9 +82,9 @@ public class Panel extends JPanel{
         }
       
     }
-    }catch (NullPointerException en){
+  }catch (NullPointerException en){
               JOptionPane.showMessageDialog(null, "Для этого файла нет обработчика", "Предупреждение", JOptionPane.ERROR_MESSAGE);
-            }
+           }
    
     }
     }

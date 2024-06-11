@@ -11,6 +11,7 @@ import com.mycompany.lab3.StorageDB;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -22,11 +23,14 @@ public class Manager {
    private BaseHandler startHandler;
    private SQLReader SQLReader;
    private DBCreator creator;
+   private Calculator calculator;
+   private Matcher matcher;
 
     public Manager() {
         this.storage = new Storage();
         this.storageDB = new StorageDB();
         this.creator = new DBCreator();
+        this.calculator = new Calculator();
         BaseHandler handlerJSON = new BaseHandler(new ReaderJSON());
         BaseHandler handlerXML = new BaseHandler(new ReaderXML());
         BaseHandler handlerYaml= new BaseHandler( new ReaderYaml());
@@ -45,15 +49,51 @@ public class Manager {
     }
     
     public void loadInfo() throws SQLException{
-        ArrayList<Country> countries = new ArrayList<Country>(); 
+        ArrayList<Country> countries = new ArrayList<>(); 
+        ArrayList <ReactorDB> reactors = new ArrayList<>();
         SQLReader = new SQLReader(creator.getConnection());
         ArrayList<Region> regionList = SQLReader.SQLRegionsReader();
-        storageDB.addReactors(regionList);
+        storageDB.addRegions(regionList);
+     
         for (Region region: regionList){
-            countries.addAll(region.getCountriesByRegion());
+            for (Country country: region.getCountriesByRegion()){
+                countries.add(country);
+            for(ReactorDB reactor: country.getReactorsByCountry()){
+                reactors.add(reactor);
         }
     }
-    public ArrayList<Region> getInfoDB(){
-        return storageDB.getList();
     }
-}
+        matcher = new Matcher();
+        matcher.match(getInfo(), reactors);
+        storageDB.addCompanies(SQLReader.SQLCompanyReader(reactors));
+        storageDB.addCountries(countries);
+        storageDB.addReactors(reactors);
+        
+    }
+    public void calculate(String way){
+        
+         if(storageDB.getConsumpReactor() == null){  
+           storageDB.addConsumpReactor(calculator.calculateReactor(storageDB.getReactorList()));
+         }
+        switch(way){
+               case "country" ->calculator.calculateByCountry(storageDB.getCountryList(), storageDB.getConsumpReactor());
+               case "region" -> {
+                   if (storageDB.getConsumpCountry()==null){
+                       HashMap<String,HashMap<Integer,Double>> consumpCountry =calculator.calculateByCountry(storageDB.getCountryList(), storageDB.getConsumpReactor());
+                       calculator.calculateByRegion(storageDB.getRegionList(), consumpCountry);
+                   }
+                   else{
+                       calculator.calculateByRegion(storageDB.getRegionList(), storageDB.getConsumpCountry());
+                   }
+               } 
+               case "operator" -> {
+                   calculator.calculateByOperator(storageDB.getCompanyList(), storageDB.getConsumpReactor(), way);
+               }
+              
+        }
+          
+    }
+ 
+    } 
+
+

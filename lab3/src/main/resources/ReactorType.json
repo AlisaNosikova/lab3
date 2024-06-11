@@ -137,16 +137,6 @@
        "electrical_capacity": 32.0,
        "life_time": 36.0,
        "first_load": 0.007
-   },
-    {
-       "className": "PWR",
-       "burnup": 40.0,
-       "kpd": 0.33,
-       "enrichment": 0.044,
-       "termal_capacity": 3200.0,
-       "electrical_capacity": 1056.0,
-       "life_time": 60.0,
-       "first_load": 79.84
    }
 ]
 
