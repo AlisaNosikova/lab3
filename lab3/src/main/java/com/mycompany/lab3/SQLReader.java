@@ -6,9 +6,11 @@ package com.mycompany.lab3;
 
 import BDtables.*;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public ArrayList<Region> SQLRegionsReader() throws SQLException{
     PreparedStatement statementNested = con.prepareStatement(queryNested);
     ResultSet resultSetNested = statementNested.executeQuery();
     ArrayList<Region> regions = new ArrayList<>();
+
      while(resultSetNested.next()){
             Region region = new Region();
             region.setIDRegion(resultSetNested.getInt("id_region"));

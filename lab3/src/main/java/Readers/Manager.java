@@ -9,6 +9,8 @@ import Chain.BaseHandler;
 import com.mycompany.lab3.SQLReader;
 import com.mycompany.lab3.StorageDB;
 import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,11 +43,19 @@ public class Manager {
     public void useChain(File file){
         storage.addReactors( startHandler.handle(file));
     }
-    public void createDB() throws SQLException{
+    public void createDB() throws SQLException, IOException{
         creator.createDB();
+        creator.createDB();
+        creator.createTables();
+    }
+    public void deleteDB() throws SQLException{
+        creator.dropDB();
     }
     public ArrayList<Reactor> getInfo(){
         return storage.getList();
+    }
+    public Connection getConnection(){
+        return creator.getConnection();
     }
     
     public void loadInfo() throws SQLException{

@@ -16,7 +16,7 @@ import javax.swing.JFrame;
     public class Frame extends JFrame{
     public Frame(String title){
         super(title);
-        setSize(350,300);
+        setSize(450,300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      
         Panel panel = new Panel(this);
         Container con= this.getContentPane();

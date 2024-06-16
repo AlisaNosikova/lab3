@@ -20,21 +20,7 @@ public class DBCreator {
     String username = "postgres.wpmfalbkqugwqcvqsxmk";
     String password = "aa23082003aab@";
       
-    connection = DriverManager.getConnection(url, username, password);
- //   excelReader.readExcel(connection, "countries");
-    
-//createTables(connection);
- //insertTables(connection, "regions");
- //insertTables(connection, "countries");
-//insertTables(connection, "companies");
- //insertTables(connection, "reactors");
- //insertTables(connection, "kiums");
-    // System.out.println(excelReader.readExcel(connection));
-//dropTables("kiums", connection);
-//dropTables("reactors", connection);
-//dropTables("countries", connection);
-//dropTables("companies", connection);
-//dropTables("regions", connection);
+    this.connection = DriverManager.getConnection(url, username, password);
  
   if (connection!=null){
       System.out.println("Успешное подключение к базе");
@@ -45,8 +31,8 @@ public class DBCreator {
    public Connection getConnection(){
        return connection;
    }
-   public static void createTables(Connection con) throws SQLException {
-       Statement statement = con.createStatement();
+   public void createTables() throws SQLException, IOException {
+       Statement statement = connection.createStatement();
        String regions = "CREATE TABLE regions " 
                     + "(ID_region INTEGER PRIMARY KEY, " 
                     + "region_name VARCHAR(28) NOT NULL)";
@@ -89,13 +75,26 @@ public class DBCreator {
             + "FOREIGN KEY (ID_reactor) REFERENCES reactors(ID_reactor))";
       statement.executeUpdate(kiums);
     System.out.println("Table created successfully!");
+     insertTables(connection, "regions");
+     insertTables(connection, "countries");
+     insertTables(connection, "companies");
+     insertTables(connection, "reactors");
+     insertTables(connection, "kiums");
+    
 }
-   public static void dropTables(String tableName, Connection con) throws SQLException{
+   public void dropDB() throws SQLException{
+    dropTables("kiums", connection);
+    dropTables("reactors", connection);
+    dropTables("countries", connection);
+    dropTables("companies", connection);
+    dropTables("regions", connection);
+   }
+   public void dropTables(String tableName, Connection con) throws SQLException{
          Statement statement = con.createStatement();
          statement.executeUpdate("DROP TABLE " + tableName);
    }
    
-public static void insertTables(Connection connection, String tableName) throws SQLException, IOException {
+public void insertTables(Connection connection, String tableName) throws SQLException, IOException {
     ExcelReader reader = new ExcelReader();
     HashMap<Integer, ArrayList<Object>> list = reader.readExcel(connection, tableName);
     Statement stmt = connection.createStatement();
