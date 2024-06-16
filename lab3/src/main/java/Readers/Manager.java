@@ -45,19 +45,20 @@ public class Manager {
     }
     public void createDB() throws SQLException, IOException{
         creator.createDB();
-        creator.createDB();
         creator.createTables();
     }
     public void deleteDB() throws SQLException{
         creator.dropDB();
     }
-    public ArrayList<Reactor> getInfo(){
+    public ArrayList<Reactor>getInfo(){
         return storage.getList();
     }
     public Connection getConnection(){
         return creator.getConnection();
     }
-    
+    public HashMap<String,HashMap<Integer,Double>> getInfoConsumo(){
+        return storageDB.getConsumpCountry();
+    }
     public void loadInfo() throws SQLException{
         ArrayList<Country> countries = new ArrayList<>(); 
         ArrayList <ReactorDB> reactors = new ArrayList<>();
@@ -103,6 +104,7 @@ public class Manager {
         }
           
     }
+    
  
     } 
 

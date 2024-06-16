@@ -19,6 +19,7 @@ public class StorageDB {
     private ArrayList<Company> companyList;
     private HashMap<Integer, HashMap<Integer,Double>> consumpByReactors;
     private HashMap<String, HashMap<Integer,Double>> consumpByCountries;
+    private HashMap<String, HashMap<Integer,Double>> consumpByRegions;
     public StorageDB(){
         
     }
@@ -57,5 +58,11 @@ public class StorageDB {
     }
       public HashMap<String, HashMap<Integer,Double>> getConsumpCountry(){
           return consumpByCountries;
+      }
+    public void addConsumpRegion(HashMap<String, HashMap<Integer,Double>> list){
+          consumpByRegions = list;
+    }
+      public HashMap<String, HashMap<Integer,Double>> getConsumpRegion(){
+          return consumpByRegions;
       }
 }

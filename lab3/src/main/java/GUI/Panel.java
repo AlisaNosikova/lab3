@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.logging.*;
 import javax.swing.*;
 
@@ -32,6 +34,8 @@ public class Panel extends JPanel{
     private JButton createDB;
     private JButton deleteDB;
     private JButton calculateButton;
+    JTabbedPane tabPanel;
+
   
     public Panel(JFrame frame){
        this.panel = this;
@@ -43,6 +47,7 @@ public class Panel extends JPanel{
        this.showButton = new JButton("ShowTree");
        this.importButton = new JButton("Import");
        this.exitButton = new JButton("Exit");
+       
        setLayout(new GridBagLayout());
        addButtons();
        importButton.addActionListener(new ImportActionListener());
@@ -56,12 +61,12 @@ public class Panel extends JPanel{
         @Override
         public void actionPerformed(ActionEvent e) {
         JPanel panel = new JPanel();
-        JRadioButton countryB = new JRadioButton("По странам");
-        JRadioButton regionB = new JRadioButton("По регионам");
-        JRadioButton operatorB = new JRadioButton("По операторам");
+        JCheckBox countryB = new JCheckBox("По странам");
+        JCheckBox regionB = new JCheckBox("По регионам");
+        JCheckBox operatorB = new JCheckBox("По операторам");
 
-    
-    ArrayList<JRadioButton> buttons = new ArrayList<>();
+    tabPanel = new JTabbedPane();
+    ArrayList<JCheckBox> buttons = new ArrayList<>();
     buttons.add(countryB);
     buttons.add(regionB);
     buttons.add(operatorB);
@@ -69,14 +74,16 @@ public class Panel extends JPanel{
     panel.add(regionB);
     panel.add(operatorB);
      JOptionPane.showMessageDialog(null, panel, "Предупреждение", JOptionPane.PLAIN_MESSAGE);
-    for (JRadioButton button: buttons){
-        System.out.println(button.getText());
-     //   manager.calculator(button.getName());
-    }
+    for (JCheckBox button: buttons){
+        if (button.isSelected() == true){
             
+         createTabs(button.getText());
+        }
+    }
+      JOptionPane.showMessageDialog(null, tabPanel, "Предупреждение", JOptionPane.PLAIN_MESSAGE);
+  
 
-        
-        
+     
     }
     }
     public class createDBActionListener implements ActionListener{
@@ -227,9 +234,56 @@ public class Panel extends JPanel{
         public void actionPerformed(ActionEvent e) {
           frame.dispose();
         }
+       }
+    public void createTabs(String text){
+           JPanel page1 = new JPanel(); 
+           page1.add(new JLabel(text)); 
+           String header1 = new String();
+           switch(text){
+               case("По странам") -> header1 = "Страна";
+               case("По регионам")-> header1 = "Регион";
+               case("По операторам")-> header1 = "Оператор";
+           }
+           Vector<Vector<String>> data = new Vector<Vector<String>>();
+        // Вектор с заголовками столбцов
+          String[] headers = new String[] {header1,"Потребление","Год"};
+           Vector<String> header = new Vector<String>();
+          for (int i=0;i<headers.length;i++){
+              header.add(headers[i]);
+          }
+        String[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
+            { "Мука"  , "кг", "4.0" },
+            { "Молоко", "л" , "2.2" }};
+         for (int j = 0; j < array.length; j++) {
+           
+            Vector<String> row = new Vector<String>();
+            for (int i = 0; i < array[j].length; i++) {
+                row.add((String)array[j][i]);
+            }
+            data.add(row);
+        }
+
+       //// HashMap<String, HashMap<Integer, Double>> list = manager.getInfoConsumo();
+       //    for (String key: list.keySet()) {
+      //   for (Integer key1: list.get(key).keySet()){
+       //     Vector<String> row = new Vector<String>();
+       //     row.add(key);
+       ////     row.add(key1.toString());
+        //   row.add(list.get(key).get(key1).toString());
+        //    data.add(row);
+       // }}
+           JTable table = new JTable(data, header);
+           System.out.println(header);
+          // Данные для таблиц
+          page1.add(table);
+          tabPanel.addTab("Tab 1", page1); 
+           panel.add(tabPanel);
+        // Простая таблица
+
+           
+        }
 
         
         
     }
     
-}
