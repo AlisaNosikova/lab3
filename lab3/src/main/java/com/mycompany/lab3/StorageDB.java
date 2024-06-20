@@ -20,6 +20,7 @@ public class StorageDB {
     private HashMap<Integer, HashMap<Integer,Double>> consumpByReactors;
     private HashMap<String, HashMap<Integer,Double>> consumpByCountries;
     private HashMap<String, HashMap<Integer,Double>> consumpByRegions;
+        private HashMap<String, HashMap<Integer,Double>> consumpByOperators;
     public StorageDB(){
         
     }
@@ -64,5 +65,11 @@ public class StorageDB {
     }
       public HashMap<String, HashMap<Integer,Double>> getConsumpRegion(){
           return consumpByRegions;
+      }
+       public void addConsumpOperator(HashMap<String, HashMap<Integer,Double>> list){
+          consumpByOperators = list;
+    }
+      public HashMap<String, HashMap<Integer,Double>> getConsumpOperator(){
+          return consumpByOperators;
       }
 }

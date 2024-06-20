@@ -44,7 +44,7 @@ public class DBCreator {
                     + "country_name VARCHAR(24) NOT NULL, " 
                     + "ID_region INTEGER NOT NULL, " 
                     + "FOREIGN KEY (ID_region) REFERENCES regions(ID_region))";
-    statement.executeUpdate(countries);
+   statement.executeUpdate(countries);
 
     String companies = "CREATE TABLE companies " 
                     + "(ID_company INTEGER PRIMARY KEY, " 
@@ -65,7 +65,7 @@ public class DBCreator {
                     + "FOREIGN KEY (ID_country) REFERENCES countries(ID_country), " 
                     + "FOREIGN KEY (ID_owner) REFERENCES companies(ID_company), " 
                     + "FOREIGN KEY (ID_operator) REFERENCES companies(ID_company))";
-    statement.executeUpdate(reactors);
+  statement.executeUpdate(reactors);
     
     String kiums = "CREATE TABLE kiums " 
             + "(ID_kium INTEGER PRIMARY KEY, "
@@ -73,58 +73,79 @@ public class DBCreator {
             + "year INTEGER NOT NULL, "
             + "ID_reactor INTEGER NOT NULL, "
             + "FOREIGN KEY (ID_reactor) REFERENCES reactors(ID_reactor))";
-      statement.executeUpdate(kiums);
+     statement.executeUpdate(kiums);
+     statement.close();
+     
     System.out.println("Table created successfully!");
-     insertTables(connection, "regions");
-     insertTables(connection, "countries");
-     insertTables(connection, "companies");
-     insertTables(connection, "reactors");
-     insertTables(connection, "kiums");
+   // closeAllStatements(connection);
+   }
+public void insert() throws SQLException, IOException{
     
+     insertTables(connection, "regions");
+    insertTables(connection, "countries");
+    insertTables(connection, "companies");
+    insertTables(connection, "reactors");
+     insertTables(connection, "kiums");
+
 }
-   public void dropDB() throws SQLException{
-    dropTables("kiums", connection);
-    dropTables("reactors", connection);
-    dropTables("countries", connection);
-    dropTables("companies", connection);
-    dropTables("regions", connection);
-   }
-   public void dropTables(String tableName, Connection con) throws SQLException{
-         Statement statement = con.createStatement();
-         statement.executeUpdate("DROP TABLE " + tableName);
-   }
-   
+public void dropDB() throws SQLException {
+    connection.setAutoCommit(false); // Выключаем автокоммит
+
+    try {
+        dropTable("kiums", connection);
+        dropTable("reactors", connection);
+        dropTable("countries", connection);
+        dropTable("companies", connection);
+        dropTable("regions", connection);
+
+        connection.commit(); 
+    } catch (SQLException e) {
+        connection.rollback(); 
+        throw e; 
+    } finally {
+        connection.setAutoCommit(true); 
+         
+    }
+}
+
+public void dropTable(String tableName, Connection con) throws SQLException {
+    Statement statement = con.createStatement();
+    statement.executeUpdate("DROP TABLE " + tableName);
+    statement.close();
+}
+
 public void insertTables(Connection connection, String tableName) throws SQLException, IOException {
     ExcelReader reader = new ExcelReader();
     HashMap<Integer, ArrayList<Object>> list = reader.readExcel(connection, tableName);
     Statement stmt = connection.createStatement();
     ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
     ResultSetMetaData rsmd = rs.getMetaData();
-     PreparedStatement pstmt = null;
-    String insertQuery = generateInsertQuery(connection, tableName,  stmt);
-     pstmt = connection.prepareStatement(insertQuery);
-    for (ArrayList<Object> values : list.values()) {
-       // System.out.println(values.get(0));
-        for (int i = 0; i < values.size(); i++) {
-            if (values.get(i) == null) {
-                pstmt.setNull(i+1, rsmd.getColumnType(i+1));
-            } else {
-             //   System.out.println(values.get(i));
-              pstmt.setObject(i+1, values.get(i), rsmd.getColumnType(i+1));
-            }
+    String insertQuery = generateInsertQuery(connection, tableName, rsmd);
+    connection.setAutoCommit(false);
+   
+// Создание PreparedStatement перед циклом
+PreparedStatement prep = connection.prepareStatement(insertQuery);
+
+for (ArrayList<Object> values : list.values()) {
+    prep.clearParameters(); // Очистка параметров перед каждой итерацией
+    for (int i = 0; i < values.size(); i++) {
+        if (values.get(i) == null) {
+            prep.setNull(i + 1, rsmd.getColumnType(i + 1));
+        } else {
+            prep.setObject(i + 1, values.get(i), rsmd.getColumnType(i + 1));
         }
-        pstmt.addBatch();
     }
-    
-    pstmt.executeBatch();
-    pstmt.close();
-    rs.close();
-    stmt.close();
+    prep.addBatch();
 }
 
-private static String generateInsertQuery(Connection connection, String tableName,  Statement stmt) throws SQLException {
-    ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
-    ResultSetMetaData rsmd = rs.getMetaData();
+// Выполнение пакета запросов
+prep.executeBatch();
+connection.commit();
+
+}
+
+private static String generateInsertQuery(Connection connection, String tableName,ResultSetMetaData rsmd) throws SQLException {
+  
     
     StringJoiner columnNames = new StringJoiner(",");
     for (int i = 1; i <= rsmd.getColumnCount(); i++) {

@@ -17,10 +17,7 @@ public class Lab3 {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException {
     Frame frame = new Frame("Реакторы");
-  // Manager manager = new Manager();
-  
 
-     //   System.out.println(manager.getInfoDB().size());
    }
 }
 

@@ -27,12 +27,15 @@ public class Manager {
    private DBCreator creator;
    private Calculator calculator;
    private Matcher matcher;
+   private boolean isLoaded;
+   
 
     public Manager() {
         this.storage = new Storage();
         this.storageDB = new StorageDB();
         this.creator = new DBCreator();
         this.calculator = new Calculator();
+        this.isLoaded = false;
         BaseHandler handlerJSON = new BaseHandler(new ReaderJSON());
         BaseHandler handlerXML = new BaseHandler(new ReaderXML());
         BaseHandler handlerYaml= new BaseHandler( new ReaderYaml());
@@ -44,8 +47,15 @@ public class Manager {
         storage.addReactors( startHandler.handle(file));
     }
     public void createDB() throws SQLException, IOException{
-        creator.createDB();
-        creator.createTables();
+       creator.createTables();
+       creator.insert();
+         // insertTables(connection, "companies");
+     //insertTables(connection, "reactors");
+    // insertTables(connection, "kiums");
+        
+    }
+    public void connectToDB() throws SQLException{
+         creator.createDB();
     }
     public void deleteDB() throws SQLException{
         creator.dropDB();
@@ -56,8 +66,14 @@ public class Manager {
     public Connection getConnection(){
         return creator.getConnection();
     }
-    public HashMap<String,HashMap<Integer,Double>> getInfoConsumo(){
-        return storageDB.getConsumpCountry();
+    public HashMap<String,HashMap<Integer,Double>> getInfoConsump(String text){
+        HashMap<String,HashMap<Integer,Double>> list = new HashMap<String,HashMap<Integer,Double>>();
+        switch(text){
+            case "По странам" -> list = storageDB.getConsumpCountry();
+            case "По регионам" -> list = storageDB.getConsumpRegion();
+            case  "По операторам" -> list = storageDB.getConsumpOperator();
+        }
+        return list;
     }
     public void loadInfo() throws SQLException{
         ArrayList<Country> countries = new ArrayList<>(); 
@@ -71,6 +87,7 @@ public class Manager {
                 countries.add(country);
             for(ReactorDB reactor: country.getReactorsByCountry()){
                 reactors.add(reactor);
+                System.out.println(reactor);
         }
     }
     }
@@ -79,7 +96,11 @@ public class Manager {
         storageDB.addCompanies(SQLReader.SQLCompanyReader(reactors));
         storageDB.addCountries(countries);
         storageDB.addReactors(reactors);
+        isLoaded = true;
         
+    }
+    public boolean getLoadingStatus() throws SQLException{
+        return isLoaded;
     }
     public void calculate(String way){
         
@@ -87,18 +108,22 @@ public class Manager {
            storageDB.addConsumpReactor(calculator.calculateReactor(storageDB.getReactorList()));
          }
         switch(way){
-               case "country" ->calculator.calculateByCountry(storageDB.getCountryList(), storageDB.getConsumpReactor());
-               case "region" -> {
+               case "По странам" ->
+               { if (storageDB.getConsumpCountry() == null){
+                   storageDB.addConsumpCountry( calculator.calculateByCountry(storageDB.getCountryList(), storageDB.getConsumpReactor()));
+               }
+               }
+               case "По регионам" -> {
                    if (storageDB.getConsumpCountry()==null){
                        HashMap<String,HashMap<Integer,Double>> consumpCountry =calculator.calculateByCountry(storageDB.getCountryList(), storageDB.getConsumpReactor());
-                       calculator.calculateByRegion(storageDB.getRegionList(), consumpCountry);
+                       storageDB.addConsumpRegion(calculator.calculateByRegion(storageDB.getRegionList(), consumpCountry));
                    }
                    else{
-                       calculator.calculateByRegion(storageDB.getRegionList(), storageDB.getConsumpCountry());
+                       storageDB.addConsumpRegion(calculator.calculateByRegion(storageDB.getRegionList(), storageDB.getConsumpCountry()));
                    }
                } 
-               case "operator" -> {
-                   calculator.calculateByOperator(storageDB.getCompanyList(), storageDB.getConsumpReactor(), way);
+               case "По операторам" -> {
+                   storageDB.addConsumpOperator(calculator.calculateByCompany(storageDB.getCompanyList(), storageDB.getConsumpReactor(), way));
                }
               
         }

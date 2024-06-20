@@ -115,8 +115,8 @@ public ArrayList<Company> SQLCompanyReader(ArrayList<ReactorDB> readyReactors) t
               listByOwners.add(reactor);
           }     
       }
-      reactorsByCompany.put("operator", listByOperators);
-      reactorsByCompany.put("owner", listByOwners);
+      reactorsByCompany.put("По операторам", listByOperators);
+      reactorsByCompany.put("По владельцам", listByOwners);
       
         return reactorsByCompany;
      

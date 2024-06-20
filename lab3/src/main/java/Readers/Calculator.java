@@ -65,7 +65,7 @@ public class Calculator {
          System.out.println(consumpRegion);
         return consumpRegion;
     }
-        public HashMap<String, HashMap<Integer,Double>> calculateByOperator(ArrayList<Company> companies,HashMap<Integer, HashMap<Integer,Double>> consumpList, String key ){
+        public HashMap<String, HashMap<Integer,Double>> calculateByCompany(ArrayList<Company> companies,HashMap<Integer, HashMap<Integer,Double>> consumpList, String key ){
          HashMap <String, HashMap<Integer,Double>> consumpCompany = new HashMap <>();
          for (Company company: companies){
             HashMap<Integer,Double> consumpYears = new HashMap<>();
