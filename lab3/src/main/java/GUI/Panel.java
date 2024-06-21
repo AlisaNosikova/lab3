@@ -52,8 +52,7 @@ public class Panel extends JPanel{
        this.showButton = new JButton("Показать дерево реакторов");
        this.importButton = new JButton("Подгрузить доп.информацию");
        this.exitButton = new JButton("Выйти");
-    
-this.connectToServer = new JButton("Подключиться к серверу");
+       this.connectToServer = new JButton("Подключиться к серверу");
 
 
        
@@ -67,54 +66,50 @@ this.connectToServer = new JButton("Подключиться к серверу")
        calculateButton.addActionListener(new calculateActionListener());
        connectToServer.addActionListener(new ConnectActionListener());
     }
-     public class calculateActionListener implements ActionListener{
+    public class calculateActionListener implements ActionListener{
         @Override
-    public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent e) {
  
         JPanel panel = new JPanel();
         JCheckBox countryB = new JCheckBox("По странам");
         JCheckBox regionB = new JCheckBox("По регионам");
         JCheckBox operatorB = new JCheckBox("По операторам");
 
-    tabPanel = new JTabbedPane();
-    ArrayList<JCheckBox> buttons = new ArrayList<>();
-    buttons.add(countryB);
-    buttons.add(regionB);
-    buttons.add(operatorB);
-    panel.add(countryB);
-    panel.add(regionB);
-    panel.add(operatorB);
+        tabPanel = new JTabbedPane();
+        ArrayList<JCheckBox> buttons = new ArrayList<>();
+        buttons.add(countryB);
+        buttons.add(regionB);
+        buttons.add(operatorB);
+        panel.add(countryB);
+        panel.add(regionB);
+        panel.add(operatorB);
          
-       if(manager.getInfo()==null){
+        if(manager.getInfo()==null){
                     JOptionPane.showMessageDialog(null, "Пожалуйста, выберите файл для подгрузки данных о реакторах", "Предупреждение", JOptionPane.ERROR_MESSAGE);
              }
-       else{
+        else{
             try {
                 if (manager.getLoadingStatus() == false){
                    JPanel panel1 = new JPanel(new GridBagLayout());
-GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
 
-// Добавление текста в центр панели
-JLabel message = new JLabel("Выгрузка данных началась. Нажмите для подтверждения", SwingConstants.CENTER);
-gbc.gridx = 0;
-gbc.gridy = 0;
-gbc.insets = new Insets(10, 10, 10, 10);
-panel1.add(message, gbc);
-
-// Добавление гифки внизу панели
-ImageIcon gifIcon = new ImageIcon("C:\\Users\\User\\Documents\\GitHub\\lab3\\lab3\\src\\main\\resources\\loading.gif");
-JLabel gifLabel = new JLabel(gifIcon);
-gbc.gridy = 1;
-gbc.insets = new Insets(0, 0, 10, 0);
-panel1.add(gifLabel, gbc);
+        JLabel message = new JLabel("Выгрузка данных началась. Нажмите для подтверждения", SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel1.add(message, gbc);
+        ImageIcon gifIcon = new ImageIcon("src\\main\\resources\\loading.gif");
+        JLabel gifLabel = new JLabel(gifIcon);
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        panel1.add(gifLabel, gbc);
                   
-JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
- 
-                     manager.loadInfo();
-                    JOptionPane.showMessageDialog(null, "Выгрузка данных завершена", "Предупреждение", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
+        manager.loadInfo();
+        JOptionPane.showMessageDialog(null, "Выгрузка данных завершена", "Предупреждение", JOptionPane.PLAIN_MESSAGE);
                    
-                }
-             JOptionPane.showMessageDialog(null, panel, "Выберите тип калькуляции", JOptionPane.QUESTION_MESSAGE);
+        }
+        JOptionPane.showMessageDialog(null, panel, "Выберите тип калькуляции", JOptionPane.QUESTION_MESSAGE);
             } catch (SQLException ex) {
                 Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -149,7 +144,7 @@ JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
     else{
         JOptionPane.showMessageDialog(null, "База данных уже заполена", null, JOptionPane.INFORMATION_MESSAGE);
     }  
-} 
+    } 
  
     catch (NullPointerException exx){
                JOptionPane.showMessageDialog(null, "Подключения к серверу не найдено", "Предупреждение", JOptionPane.ERROR_MESSAGE);
