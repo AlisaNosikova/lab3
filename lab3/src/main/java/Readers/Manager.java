@@ -49,9 +49,6 @@ public class Manager {
     public void createDB() throws SQLException, IOException{
        creator.createTables();
        creator.insert();
-         // insertTables(connection, "companies");
-     //insertTables(connection, "reactors");
-    // insertTables(connection, "kiums");
         
     }
     public void connectToDB() throws SQLException{
@@ -87,7 +84,6 @@ public class Manager {
                 countries.add(country);
             for(ReactorDB reactor: country.getReactorsByCountry()){
                 reactors.add(reactor);
-                System.out.println(reactor);
         }
     }
     }

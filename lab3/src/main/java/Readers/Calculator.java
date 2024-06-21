@@ -5,6 +5,7 @@
 package Readers;
 
 import BDtables.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +14,7 @@ import java.util.HashMap;
  * @author User
  */
 public class Calculator {
-    HashMap<Integer, HashMap<Integer,Double>> consumpList = new HashMap<>(); 
+    private HashMap<Integer, HashMap<Integer,Double>> consumpList = new HashMap<>(); 
     public  HashMap<Integer, HashMap<Integer,Double>> calculateReactor(ArrayList<ReactorDB> reactors){
         for (ReactorDB reactor: reactors){
             HashMap<Integer, Double> consumpByReactor = new HashMap<>();
@@ -25,12 +26,11 @@ public class Calculator {
             }
             else{ 
                 consump = reactor.getTermal_capacity()/reactor.getBurnup()*kium.getKium();
-                consumpByReactor.put(kium.getYear(), consump);
+                 consumpByReactor.put(kium.getYear(), consump);
             }
             }
            consumpList.put(reactor.getID(),consumpByReactor);
         }
-      System.out.println(consumpList);   
     return consumpList;
     }
     public HashMap<String, HashMap<Integer,Double>> calculateByCountry(ArrayList<Country> countries,HashMap<Integer, HashMap<Integer,Double>> consumpList ){
@@ -46,7 +46,7 @@ public class Calculator {
         }
             consumpCountry.put(country.getCountryName(), consumpYears);
             }
-        System.out.println(consumpCountry);
+      //  System.out.println(consumpCountry);
         return consumpCountry;
     }
         public HashMap<String, HashMap<Integer,Double>> calculateByRegion(ArrayList<Region> regions,HashMap<String, HashMap<Integer,Double>> consumpList ){

@@ -53,7 +53,7 @@ public class DBCreator {
     String reactors = "CREATE TABLE reactors " 
                     + "(ID_reactor INTEGER PRIMARY KEY, " 
                     + "reactor_name VARCHAR(25) NOT NULL, "
-                    + "reactor_type VARCHAR(4) NOT NULL, " 
+                    + "reactor_type VARCHAR(10) NOT NULL, " 
                     + "model VARCHAR(35) NOT NULL, " 
                     + "status VARCHAR(25) NOT NULL, " 
                     + "thermal_capacity INTEGER NOT NULL, " 
@@ -144,7 +144,7 @@ connection.commit();
 
 }
 
-private static String generateInsertQuery(Connection connection, String tableName,ResultSetMetaData rsmd) throws SQLException {
+private String generateInsertQuery(Connection connection, String tableName,ResultSetMetaData rsmd) throws SQLException {
   
     
     StringJoiner columnNames = new StringJoiner(",");

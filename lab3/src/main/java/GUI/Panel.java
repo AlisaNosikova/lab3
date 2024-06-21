@@ -84,7 +84,6 @@ this.connectToServer = new JButton("Подключиться к серверу")
     panel.add(countryB);
     panel.add(regionB);
     panel.add(operatorB);
-     //JOptionPane.showMessageDialog(null, panel, "Предупреждение", JOptionPane.PLAIN_MESSAGE);
          
        if(manager.getInfo()==null){
                     JOptionPane.showMessageDialog(null, "Пожалуйста, выберите файл для подгрузки данных о реакторах", "Предупреждение", JOptionPane.ERROR_MESSAGE);
@@ -109,8 +108,6 @@ gbc.gridy = 1;
 gbc.insets = new Insets(0, 0, 10, 0);
 panel1.add(gifLabel, gbc);
                   
-
-// Отображение диалогового окна
 JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
  
                      manager.loadInfo();
@@ -179,6 +176,7 @@ JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
 
     if (yesB.isSelected() == true){
                 manager.deleteDB();
+                JOptionPane.showMessageDialog(null, "База данных очищена", null, JOptionPane.QUESTION_MESSAGE);
                 }
             
             }   catch (NullPointerException ex) {
@@ -201,12 +199,15 @@ JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     int result = fileChooser.showOpenDialog(Panel.this);
     File selectedFile = fileChooser.getSelectedFile();
+    try{
     JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
+    }catch (NullPointerException enull){
+              JOptionPane.showMessageDialog(null, "Выберите файл", "Предупреждение", JOptionPane.ERROR_MESSAGE);
+            }
     if (selectedFile != null && selectedFile.exists()) {
         try{
         if (result == JFileChooser.APPROVE_OPTION) {
             try{       
-             JOptionPane.showMessageDialog(Panel.this, fileChooser.getSelectedFile().getName());
              manager.useChain(selectedFile);
            }  catch (NullPointerException ex) {
                     JOptionPane.showMessageDialog(null, "Для этого файла нет обработчика", "Предупреждение", JOptionPane.ERROR_MESSAGE);
@@ -239,17 +240,14 @@ JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
             model.addReactorsList(manager.getInfo());
             JTree tree = new JTree(model);
             JScrollPane scrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-            panel.removeAll(); // Удалить все существующие компоненты
-            panel.setLayout(new BorderLayout());
-            panel.add(scrollPane, BorderLayout.CENTER);
-            revalidate();
+             JOptionPane.showMessageDialog(null, scrollPane, null, JOptionPane.INFORMATION_MESSAGE);
             }
     }catch (NullPointerException en){
         JOptionPane.showMessageDialog(null, "Нет данных для построение дерева", "Предупреждение", JOptionPane.ERROR_MESSAGE);
     }
     }
     }
-      private void addButtons(){
+    private void addButtons(){
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 20, 20, 20);
         
@@ -264,14 +262,13 @@ JOptionPane.showMessageDialog(null, panel1, null, JOptionPane.PLAIN_MESSAGE);
         add(showButton, gbc);
         gbc.gridx = 2;
         gbc.gridy = 0;
-        ImageIcon icon = new ImageIcon("C:\\Users\\User\\Documents\\GitHub\\lab3\\lab3\\src\\main\\resources\\icon1.png");
-Image img = icon.getImage();
-Image newImg = img.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-icon = new ImageIcon(newImg);
+        ImageIcon icon = new ImageIcon("src\\main\\resources\\icon1.png");
+        Image img = icon.getImage();
+        Image newImg = img.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(newImg);
 
-connectToServer.setIcon(icon);
-        // connectToServer.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
-         connectToServer.setBackground(Color.WHITE);
+        connectToServer.setIcon(icon);
+        connectToServer.setBackground(Color.WHITE);
         add(connectToServer, gbc);
         gbc.gridx = 3;
         gbc.gridy = 0;
@@ -313,18 +310,7 @@ connectToServer.setIcon(icon);
                 if (manager.getConnection()!=null){
                      JOptionPane.showMessageDialog(null, "Успешное подключение к базе данных", null, JOptionPane.INFORMATION_MESSAGE);
                 }
-                 Statement stmt = manager.getConnection().createStatement();
-    ResultSet rs = stmt.executeQuery("SELECT * FROM " + "regions");
-    ResultSetMetaData rsmd = rs.getMetaData();
-    StringJoiner columnNames = new StringJoiner(",");
-    System.out.println(columnNames);
-    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-        columnNames.add(rsmd.getColumnName(i));
-        System.out.println(rsmd.getColumnName(i));
-    }
     
-    String insertQuery = "INSERT INTO " + "regions" + " (" + columnNames.toString() + ") VALUES (" + "?,".repeat(rsmd.getColumnCount() - 1) + "?)";
- System.out.println(insertQuery);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Не удалось подключиться к серверу", null, JOptionPane.ERROR_MESSAGE);
             }
@@ -342,13 +328,12 @@ connectToServer.setIcon(icon);
     };
 
     Object[] columnsHeader = new String[] {header1, "Потребление", "Год"};
-    // Создание заголовков столбцов
     Vector<String> columnNames = new Vector<>();
     for (Object col : columnsHeader) {
         columnNames.add((String)col);
     }
 
-    // Создание данных таблицы
+    
     Vector<Vector<String>> data = new Vector<>();
     
     HashMap<String, HashMap<Integer, Double>> list = manager.getInfoConsump(text);
@@ -361,7 +346,7 @@ connectToServer.setIcon(icon);
          Vector<String> row = new Vector<String>();
          row.add(key);
          row.add(key1.toString());
-         Double result = list.get(key).get(key1);
+         Double result = Math.round(list.get(key).get(key1) * 100.0) / 100.0;
          if (result!=0){
          row.add(result.toString());
           data.add(row);
