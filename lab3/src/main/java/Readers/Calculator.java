@@ -46,7 +46,6 @@ public class Calculator {
         }
             consumpCountry.put(country.getCountryName(), consumpYears);
             }
-      //  System.out.println(consumpCountry);
         return consumpCountry;
     }
         public HashMap<String, HashMap<Integer,Double>> calculateByRegion(ArrayList<Region> regions,HashMap<String, HashMap<Integer,Double>> consumpList ){
@@ -62,7 +61,6 @@ public class Calculator {
         }
             consumpRegion.put(region.getRegionName(), consumpYears);
             }
-         System.out.println(consumpRegion);
         return consumpRegion;
     }
         public HashMap<String, HashMap<Integer,Double>> calculateByCompany(ArrayList<Company> companies,HashMap<Integer, HashMap<Integer,Double>> consumpList, String key ){
@@ -71,7 +69,6 @@ public class Calculator {
             HashMap<Integer,Double> consumpYears = new HashMap<>();
             for (int year=2014;year<=2024;year++){
             double energy = 0;
-            System.out.println(company.getReactorsByCompany());
            for (ReactorDB reactor: company.getReactorsByCompany().get(key)){
              energy += consumpList.get(reactor.getID()).get(year);
             }
@@ -79,7 +76,6 @@ public class Calculator {
         }
             consumpCompany.put(company.getCompanyName(), consumpYears);
             }
-        System.out.println(consumpCompany);
         return consumpCompany;
             
         }

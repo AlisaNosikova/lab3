@@ -113,12 +113,12 @@ public class Panel extends JPanel{
             } catch (SQLException ex) {
                 Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
             }
-    for (JCheckBox button: buttons){
-        if (button.isSelected() == true){
-         createTabs(button.getText());
+        for (JCheckBox button: buttons){
+           if (button.isSelected() == true){
+           createTabs(button.getText());
+           }
         }
-    }
-            }
+        }
       JOptionPane.showMessageDialog(null, tabPanel, "Результаты", JOptionPane.PLAIN_MESSAGE);
 
     

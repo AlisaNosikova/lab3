@@ -14,7 +14,7 @@ import java.util.*;
  * @author User
  */
 public class DBCreator {
-     Connection connection = null;
+    Connection connection = null;
     public void createDB() throws SQLException{
     String url = "jdbc:postgresql://aws-0-us-west-1.pooler.supabase.com:6543/postgres";
     String username = "postgres.wpmfalbkqugwqcvqsxmk";
@@ -31,7 +31,7 @@ public class DBCreator {
    public Connection getConnection(){
        return connection;
    }
-   public void createTables() throws SQLException, IOException {
+    public void createTables() throws SQLException, IOException {
        Statement statement = connection.createStatement();
        String regions = "CREATE TABLE regions " 
                     + "(ID_region INTEGER PRIMARY KEY, " 
@@ -44,7 +44,7 @@ public class DBCreator {
                     + "country_name VARCHAR(24) NOT NULL, " 
                     + "ID_region INTEGER NOT NULL, " 
                     + "FOREIGN KEY (ID_region) REFERENCES regions(ID_region))";
-   statement.executeUpdate(countries);
+    statement.executeUpdate(countries);
 
     String companies = "CREATE TABLE companies " 
                     + "(ID_company INTEGER PRIMARY KEY, " 
@@ -65,7 +65,7 @@ public class DBCreator {
                     + "FOREIGN KEY (ID_country) REFERENCES countries(ID_country), " 
                     + "FOREIGN KEY (ID_owner) REFERENCES companies(ID_company), " 
                     + "FOREIGN KEY (ID_operator) REFERENCES companies(ID_company))";
-  statement.executeUpdate(reactors);
+    statement.executeUpdate(reactors);
     
     String kiums = "CREATE TABLE kiums " 
             + "(ID_kium INTEGER PRIMARY KEY, "
@@ -77,19 +77,18 @@ public class DBCreator {
      statement.close();
      
     System.out.println("Table created successfully!");
-   // closeAllStatements(connection);
-   }
-public void insert() throws SQLException, IOException{
+     }
+    public void insert() throws SQLException, IOException{
     
-     insertTables(connection, "regions");
+    insertTables(connection, "regions");
     insertTables(connection, "countries");
     insertTables(connection, "companies");
     insertTables(connection, "reactors");
-     insertTables(connection, "kiums");
+    insertTables(connection, "kiums");
 
-}
-public void dropDB() throws SQLException {
-    connection.setAutoCommit(false); // Выключаем автокоммит
+    }
+    public void dropDB() throws SQLException {
+    connection.setAutoCommit(false); 
 
     try {
         dropTable("kiums", connection);
@@ -106,15 +105,15 @@ public void dropDB() throws SQLException {
         connection.setAutoCommit(true); 
          
     }
-}
+   }
 
-public void dropTable(String tableName, Connection con) throws SQLException {
+    public void dropTable(String tableName, Connection con) throws SQLException {
     Statement statement = con.createStatement();
     statement.executeUpdate("DROP TABLE " + tableName);
     statement.close();
-}
+    }
 
-public void insertTables(Connection connection, String tableName) throws SQLException, IOException {
+    public void insertTables(Connection connection, String tableName) throws SQLException, IOException {
     ExcelReader reader = new ExcelReader();
     HashMap<Integer, ArrayList<Object>> list = reader.readExcel(connection, tableName);
     Statement stmt = connection.createStatement();
@@ -123,11 +122,11 @@ public void insertTables(Connection connection, String tableName) throws SQLExce
     String insertQuery = generateInsertQuery(connection, tableName, rsmd);
     connection.setAutoCommit(false);
    
-// Создание PreparedStatement перед циклом
-PreparedStatement prep = connection.prepareStatement(insertQuery);
 
-for (ArrayList<Object> values : list.values()) {
-    prep.clearParameters(); // Очистка параметров перед каждой итерацией
+    PreparedStatement prep = connection.prepareStatement(insertQuery);
+
+    for (ArrayList<Object> values : list.values()) {
+    prep.clearParameters(); 
     for (int i = 0; i < values.size(); i++) {
         if (values.get(i) == null) {
             prep.setNull(i + 1, rsmd.getColumnType(i + 1));
@@ -136,15 +135,14 @@ for (ArrayList<Object> values : list.values()) {
         }
     }
     prep.addBatch();
-}
+    }
 
-// Выполнение пакета запросов
-prep.executeBatch();
-connection.commit();
+    prep.executeBatch();
+    connection.commit();
 
-}
+    }
 
-private String generateInsertQuery(Connection connection, String tableName,ResultSetMetaData rsmd) throws SQLException {
+    public String generateInsertQuery(Connection connection, String tableName,ResultSetMetaData rsmd) throws SQLException {
   
     
     StringJoiner columnNames = new StringJoiner(",");
@@ -156,6 +154,6 @@ private String generateInsertQuery(Connection connection, String tableName,Resul
  
     
     return insertQuery;
-}
+    }
 
 }
